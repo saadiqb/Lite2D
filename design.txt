@@ -1,0 +1,37 @@
+Game Loop:
+
+    capture input
+    
+    drawgrid()
+    drawapple()
+    drawsnake()
+
+
+ECS system:
+
+    E -> snake, food, walls
+    C -> position, renderable, collidable, controllable
+    S -> MovementS, CollisionS, RenderingS
+
+    - System acts on entities using comp.onents (properties)
+
+EDA:
+    event driven on an event bus with pub/sub
+
+
+entity manager
+event bus
+
+movement system
+collision system
+food system
+rendering system
+
+eventbus.subscribe()
+
+while (true)
+{
+    movs.update()
+    renderering system.render(em)
+    sleep for tick
+}
