@@ -127,6 +127,7 @@ int main( int argc, char* args[] )
 
         }
         //------------------------------------------------------------------
+        // Game Logic Here
 
 
         //------------------------------------------------------------------
@@ -144,16 +145,16 @@ int main( int argc, char* args[] )
         SDL_Color white = { 255, 255, 255, 255 };
         gTimeTextTexture.RenderText(fpsCounter.str(), white, 10, 10, renderer);
 
-
-        ratTexture.Render(renderer, 200, 200, nullptr, 200.0f, 200.0f);
-
-        
-        if (inputManager.IsKeyHeld(SDLK_SPACE))
+        if (inputManager.IsMouseInRect(100,100,200,200))
         {
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-            SDL_RenderFillRect(renderer, NULL);
+            SDL_FRect rect = { 100,100,200,200};
+
+            SDL_RenderFillRect(renderer, &rect);
         }
 
+
+        ratTexture.Render(renderer, 200, 200, nullptr, 200.0f, 200.0f);
 
         //------------------------------------------------------------------
         // Frame rate control
