@@ -7,6 +7,10 @@ class Texture
 {
 public:
     Texture(int width, int height): mTexture(nullptr), mWidth(width), mHeight(height) {}
+
+    Texture(const Texture&) = delete;
+    Texture& operator=(const Texture&) = delete;
+
     ~Texture() { Destroy(); }
 
     bool LoadFromFile(const std::string& path, SDL_Renderer* renderer)

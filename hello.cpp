@@ -11,12 +11,13 @@
 #include "Texture.h"
 #include "TextRenderer.h"
 #include "Renderer.h"
+#include "InputManager.h"
 
 /* Constants */
 //Screen dimension constants
 constexpr int kScreenWidth{ 1920 };
 constexpr int kScreenHeight{ 1080 };
-constexpr int kScreenFps { 60 };
+constexpr int kScreenFps { 10 };
 
 static SDL_Window *window = nullptr;
 
@@ -72,8 +73,13 @@ int main( int argc, char* args[] )
         return -1;
     }
 
+    InputManager inputManager;
+
     Renderer rendererObj(renderer);
     TextRenderer gTimeTextTexture;
+
+    Texture ratTexture(200, 200);
+    ratTexture.LoadFromFile("rat.png", renderer);
 
     gTimeTextTexture.LoadFont("lazy.ttf", 28);
 
@@ -90,13 +96,15 @@ int main( int argc, char* args[] )
     double lastMeasuredFps = 0.0;
 
     while (isRunning) {
-        SDL_Log("Starting new frame...");
+        // SDL_Log("New frame...");
         frameTimer.Start();
 
         SDL_Event event;
 
+        //------------------------------------------------------------------
+        // Input Handling
         while (SDL_PollEvent(&event)) {
-            SDL_Log("Event type: %d", event.type);
+            // SDL_Log("Event type: %d", event.type);
 
             if (event.type == SDL_EVENT_QUIT) {
                 isRunning = false;
@@ -104,25 +112,54 @@ int main( int argc, char* args[] )
 
             if (event.type == SDL_EVENT_WINDOW_MOVED || event.type == SDL_EVENT_WINDOW_RESIZED) {
                 SDL_Log("Window moved or resized: %d, %d", event.window.data1, event.window.data2);
-            }
-        }
+            }     
+            
 
+            inputManager.FeedEvent(event);
+            inputManager.Update();
+
+            if (inputManager.IsKeyHeld(SDLK_SPACE))
+            {
+                SDL_Log("----space -----");
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                SDL_RenderFillRect(renderer, NULL);
+            }
+
+        }
+        //------------------------------------------------------------------
+
+
+        //------------------------------------------------------------------
         // Clear the screen
         rendererObj.SetDrawColor(0, 0, 0, 255);
         rendererObj.Clear();
 
-        // Render here
 
+
+        //------------------------------------------------------------------
+        // Render here
         fpsCounter.str(""); // Clear the stringstream
         fpsCounter << "FPS: " << std::fixed << std::setprecision(2) << lastMeasuredFps;
         
         SDL_Color white = { 255, 255, 255, 255 };
-        gTimeTextTexture.RenderText(fpsCounter.str(), white, 200, 200, renderer);
+        gTimeTextTexture.RenderText(fpsCounter.str(), white, 10, 10, renderer);
 
+
+        ratTexture.Render(renderer, 200, 200, nullptr, 200.0f, 200.0f);
+
+        
+        if (inputManager.IsKeyHeld(SDLK_SPACE))
+        {
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            SDL_RenderFillRect(renderer, NULL);
+        }
+
+
+        //------------------------------------------------------------------
         // Frame rate control
         double frameTimeSeconds = frameTimer.GetElapsedSeconds();
         if (frameTimeSeconds <= 0.0) {
-            SDL_Log("Frame time is zero or negative, skipping frame rate control.");
+            // SDL_Log("Frame time is zero or negative, skipping frame rate control.");
             continue; // Skip frame rate control if frame time is invalid
         }
 
@@ -134,12 +171,14 @@ int main( int argc, char* args[] )
         }
         else
         {
-            SDL_Log("Frame too fast. Need delay");
+            // SDL_Log("Frame too fast. Need delay");
             SDL_Delay(static_cast<Uint32>((((1.0 / kScreenFps) - frameTimeSeconds) * 1000 )));
         }
 
         double totalFrameTime = frameTimer.GetElapsedSeconds();
         lastMeasuredFps = (totalFrameTime > 0.0) ? (1.0 / totalFrameTime) : 0.0;
+        //------------------------------------------------------------------
+
     }
 
     SDL_Log("Exiting main loop...");
