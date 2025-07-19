@@ -96,9 +96,14 @@ int main( int argc, char* args[] )
         SDL_Event event;
 
         while (SDL_PollEvent(&event)) {
+            SDL_Log("Event type: %d", event.type);
 
             if (event.type == SDL_EVENT_QUIT) {
                 isRunning = false;
+            }
+
+            if (event.type == SDL_EVENT_WINDOW_MOVED || event.type == SDL_EVENT_WINDOW_RESIZED) {
+                SDL_Log("Window moved or resized: %d, %d", event.window.data1, event.window.data2);
             }
         }
 
@@ -112,26 +117,34 @@ int main( int argc, char* args[] )
         fpsCounter << "FPS: " << std::fixed << std::setprecision(2) << lastMeasuredFps;
         
         SDL_Color white = { 255, 255, 255, 255 };
-        gTimeTextTexture.RenderText(fpsCounter.str(), white, 10, 10, renderer);
+        gTimeTextTexture.RenderText(fpsCounter.str(), white, 200, 200, renderer);
 
         // Frame rate control
         double frameTimeSeconds = frameTimer.GetElapsedSeconds();
-        double framesPerSecond = (frameTimeSeconds > 0.0) ? (1.0 / frameTimeSeconds) : 0.0;
-
-        // SDL_Log("Data: Frame time: %f seconds, FPS: %f", frameTimeSeconds, framesPerSecond);
+        if (frameTimeSeconds <= 0.0) {
+            SDL_Log("Frame time is zero or negative, skipping frame rate control.");
+            continue; // Skip frame rate control if frame time is invalid
+        }
 
         // Update the screen
         rendererObj.Present();
 
-        if (frameTimeSeconds < kScreenFps) {
-            SDL_Delay(static_cast<int>((1.0 / kScreenFps - frameTimeSeconds) * 1000));
+        if (frameTimeSeconds > (1.0 / kScreenFps)) {
+            SDL_Log("Frame rate is lower than desired");
+        }
+        else
+        {
+            SDL_Log("Frame too fast. Need delay");
+            SDL_Delay(static_cast<Uint32>((((1.0 / kScreenFps) - frameTimeSeconds) * 1000 )));
         }
 
         double totalFrameTime = frameTimer.GetElapsedSeconds();
         lastMeasuredFps = (totalFrameTime > 0.0) ? (1.0 / totalFrameTime) : 0.0;
     }
 
+    SDL_Log("Exiting main loop...");
 
+    rendererObj.Shutdown();
     CleanupSDL();
     return 0;
 }

@@ -6,10 +6,8 @@ class Renderer {
 public:
     Renderer(SDL_Renderer* renderer) : mRenderer(renderer) {}
     ~Renderer() {
-        if (mRenderer) {
-            SDL_DestroyRenderer(mRenderer);
-            mRenderer = nullptr;
-        }
+        // Incase you forget to call Shutdown
+        Shutdown();
     }
 
     // Delete copy constructor and assignment operator
@@ -22,6 +20,13 @@ public:
 
     // Get the underlying SDL_Renderer
     SDL_Renderer* GetRendererObject() const { return mRenderer; }
+
+    void Shutdown() {
+        if (mRenderer) {
+            SDL_DestroyRenderer(mRenderer);
+            mRenderer = nullptr;
+        }
+    }
 
     void Clear() const
     {
