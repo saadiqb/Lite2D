@@ -5,43 +5,25 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 
 #include "timer.h"
-#include "ltexture.h"
-
+#include "Texture.h"
+#include "TextRenderer.h"
+#include "Renderer.h"
 
 /* Constants */
 //Screen dimension constants
-constexpr int kScreenWidth{ 640 };
-constexpr int kScreenHeight{ 480 };
+constexpr int kScreenWidth{ 1920 };
+constexpr int kScreenHeight{ 1080 };
 constexpr int kScreenFps { 60 };
 
 static SDL_Window *window = nullptr;
+
 static SDL_Renderer *renderer = nullptr;
 
 //Global font
-TTF_Font* gFont{ nullptr };
-
-//The time text texture
-LTexture gTimeTextTexture; 
-
-
-bool loadMedia()
-{
-    //File loading flag
-    bool success{ true };
-
-    //Load scene font
-    std::string fontPath{ "lazy.ttf" };
-    if( gFont = TTF_OpenFont( fontPath.c_str(), 28 ); gFont == nullptr )
-    {
-        SDL_Log( "Could not load %s! SDL_ttf Error: %s\n", fontPath.c_str(), SDL_GetError() );
-        success = false;
-    }
-
-    return success;
-}
-
+// TTF_Font* gFont{ nullptr };
 
 bool InitSDL()
 {
@@ -71,16 +53,6 @@ bool InitSDL()
 
 void CleanupSDL()
 {
-
-    gTimeTextTexture.destroy();
-
-    TTF_CloseFont(gFont);
-    gFont = nullptr;
-
-    if (renderer) {
-        SDL_DestroyRenderer(renderer);
-        renderer = nullptr;
-    }
     if (window) {
         SDL_DestroyWindow(window);
         window = nullptr;
@@ -100,14 +72,26 @@ int main( int argc, char* args[] )
         return -1;
     }
 
-    loadMedia();
+    Renderer rendererObj(renderer);
+    TextRenderer gTimeTextTexture;
+
+    gTimeTextTexture.LoadFont("lazy.ttf", 28);
 
     std::stringstream fpsCounter;
 
+    Timer frameTimer;
+    
+    Timer fpsTimer;
+    fpsTimer.Start();
+
+    double fps = 0.0;
+    const int fpsUpdateIntervalMs = 500; // Update FPS every 500 milliseconds
+
+    double lastMeasuredFps = 0.0;
+
     while (isRunning) {
-        SDL_Log("--Run--");
-        Timer frameTimer;
-        frameTimer.start();
+        SDL_Log("Starting new frame...");
+        frameTimer.Start();
 
         SDL_Event event;
 
@@ -119,36 +103,32 @@ int main( int argc, char* args[] )
         }
 
         // Clear the screen
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
+        rendererObj.SetDrawColor(0, 0, 0, 255);
+        rendererObj.Clear();
 
         // Render here
 
+        fpsCounter.str(""); // Clear the stringstream
+        fpsCounter << "FPS: " << std::fixed << std::setprecision(2) << lastMeasuredFps;
+        
+        SDL_Color white = { 255, 255, 255, 255 };
+        gTimeTextTexture.RenderText(fpsCounter.str(), white, 10, 10, renderer);
+
         // Frame rate control
-        constexpr Uint64 nsPerFrameExpected = 1000000000 / kScreenFps; // 1 second in nanoseconds divided by FPS
-        Uint64 nsPerFrameActual = frameTimer.getTicks();
-        // std::cout << "Frame time: " << nsPerFrameActual << " ns" << std::endl;
-        SDL_Log("Frame time: %llu ns", nsPerFrameActual);
-        // fpsCounter.str("");
-        // fpsCounter.precision(2);
-        // fpsCounter << "FPS: " << std::fixed << (1000000000 / nsPerFrameActual);
-        // std::cout << fpsCounter.str() << std::endl;  
+        double frameTimeSeconds = frameTimer.GetElapsedSeconds();
+        double framesPerSecond = (frameTimeSeconds > 0.0) ? (1.0 / frameTimeSeconds) : 0.0;
 
-        SDL_Color textColor = { 255, 255, 255, 255 };
-        // bool rv = gTimeTextTexture.loadFromRenderedText(fpsCounter.str(), textColor);
-        // if (!rv) {
-        //     SDL_Log("Failed to render text: %s", SDL_GetError());
-        // }
-
-        // //Draw text
-        // gTimeTextTexture.render( 100, 100, nullptr, 400, 100, 0.0, nullptr, SDL_FLIP_NONE );
+        // SDL_Log("Data: Frame time: %f seconds, FPS: %f", frameTimeSeconds, framesPerSecond);
 
         // Update the screen
-        SDL_RenderPresent(renderer);
+        rendererObj.Present();
 
-        if (nsPerFrameActual < nsPerFrameExpected) {
-            SDL_DelayNS(nsPerFrameExpected - nsPerFrameActual);
+        if (frameTimeSeconds < kScreenFps) {
+            SDL_Delay(static_cast<int>((1.0 / kScreenFps - frameTimeSeconds) * 1000));
         }
+
+        double totalFrameTime = frameTimer.GetElapsedSeconds();
+        lastMeasuredFps = (totalFrameTime > 0.0) ? (1.0 / totalFrameTime) : 0.0;
     }
 
 

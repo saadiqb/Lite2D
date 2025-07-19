@@ -21,8 +21,10 @@ add_subdirectory(vendored/SDL_image EXCLUDE_FROM_ALL)
 
 
 # Create your game executable target as usual
-add_executable(hello WIN32 hello.cpp)
+# add_executable(hello WIN32 hello.cpp)
+add_executable(hello WIN32 ${CMAKE_CURRENT_SOURCE_DIR}/hello.cpp)
 
+target_include_directories(hello PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_compile_features(hello PRIVATE cxx_std_17)
 

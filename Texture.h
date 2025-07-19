@@ -23,6 +23,22 @@ public:
         return true;
     }
 
+    bool LoadFromSurface(SDL_Surface* surface, SDL_Renderer* renderer)
+    {
+        if (mTexture) {
+            Destroy();
+        }
+
+        mTexture = SDL_CreateTextureFromSurface(renderer, surface);
+        if (!mTexture) {
+            SDL_Log("Failed to create texture from surface: %s", SDL_GetError());
+            return false;
+        }
+        mWidth = surface->w;
+        mHeight = surface->h;
+        return true;
+    }
+
     void Render(SDL_Renderer* renderer, float x, float y, SDL_FRect* clip = nullptr, float width = -1.f, float height = -1.f, double degrees = 0.0, SDL_FPoint* center = nullptr, SDL_FlipMode flipMode = SDL_FLIP_NONE)
     {
         if (!mTexture) return;

@@ -7,44 +7,60 @@ class Timer
 public:
     Timer() : _startTicks(0), _pausedTicks(0), _isPaused(false), _isStarted(false) {}
 
-    void start() {
+    void Start() {
         _isStarted = true;
         _isPaused = false;
-        _startTicks = SDL_GetTicks();
+        _startTicks = SDL_GetPerformanceCounter();
     }
 
-    void stop() {
+    void Stop() {
         _isStarted = false;
         _isPaused = false;
         _startTicks = 0;
         _pausedTicks = 0;
     }
     
-    void pause() {
+    void Pause() {
         if (_isStarted && !_isPaused) {
             _isPaused = true;
-            _pausedTicks = SDL_GetTicks() - _startTicks;
-            _startTicks = 0;
+            _pausedTicks = SDL_GetPerformanceCounter() - _startTicks;
         }
     }
 
-    void unpause() {
-        if (_isPaused) {
+    void Unpause() {
+        if (_isStarted && _isPaused) {
             _isPaused = false;
-            _startTicks = SDL_GetTicks() - _pausedTicks;
+            _startTicks = SDL_GetPerformanceCounter() - _pausedTicks;
             _pausedTicks = 0;
         }
     }
 
-    Uint64 getTicks() const {
+    // Raw tick count
+    Uint64 GetTicksRaw() const {
         if (_isStarted) {
             if (_isPaused) {
                 return _pausedTicks;
             } else {
-                return SDL_GetTicks() - _startTicks;
+                return SDL_GetPerformanceCounter() - _startTicks;
             }
         }
         return 0;
+    }
+
+    double GetElapsedSeconds() const {
+        Uint64 ticks = GetTicksRaw();
+        Uint64 frequency = SDL_GetPerformanceFrequency();
+        if (frequency == 0) {
+            SDL_Log("Performance frequency is zero, cannot calculate elapsed seconds.");
+            return 0.0f; // Avoid division by zero
+        }
+        SDL_Log("Performance frequency: %llu, Ticks: %llu", frequency, ticks);
+        SDL_Log("Elapsed seconds: %f", static_cast<double>(ticks) / static_cast<double>(frequency));
+        return static_cast<double>(ticks) / static_cast<double>(frequency);
+    }
+
+    Uint32 GetElapsedMilliseconds() const {
+        return static_cast<Uint32>(GetElapsedSeconds() * 1000.0);
     }
 
     bool isStarted() const { return _isStarted; }
