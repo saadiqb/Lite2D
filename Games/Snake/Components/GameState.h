@@ -26,7 +26,7 @@ public:
     bool isNewHighScore;
     
     GameState() 
-        : currentState(MENU), score(0), highScore(0), level(1), 
+        : currentState(PLAYING), score(0), highScore(0), level(1), 
           gameSpeed(1.0f), isNewHighScore(false) {}
     
     // Component interface

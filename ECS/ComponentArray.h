@@ -3,6 +3,7 @@
 #include "IComponentArray.h"
 #include "Component.h"
 #include <array>
+#include <iostream>
 
 namespace Lite2D {
 namespace ECS {
@@ -18,14 +19,15 @@ public:
     static_assert(std::is_base_of_v<Component, T>, "Component must inherit from Component base class");
     
     ComponentArray() {
-        // Initialize sparse array with invalid entity
-        mEntityToIndex.fill(INVALID_ENTITY);
+        // Initialize sparse array with unused slot marker
+        // Use MAX_ENTITIES as the unused slot marker since entities are 1 to MAX_ENTITIES-1
+        mEntityToIndex.fill(MAX_ENTITIES);
         mIndexToEntity.fill(INVALID_ENTITY);
     }
     
     // Add component to entity
     void InsertData(Entity entity, Component* component) override {
-        if (mEntityToIndex[entity] != INVALID_ENTITY) {
+        if (mEntityToIndex[entity] != MAX_ENTITIES) {
             // Entity already has this component, update it
             mComponentArray[mEntityToIndex[entity]] = *static_cast<T*>(component);
             return;
@@ -41,7 +43,7 @@ public:
     
     // Remove component from entity
     void RemoveData(Entity entity) override {
-        if (mEntityToIndex[entity] == INVALID_ENTITY) {
+        if (mEntityToIndex[entity] == MAX_ENTITIES) {
             return; // Entity doesn't have this component
         }
         
@@ -55,14 +57,14 @@ public:
         mEntityToIndex[entityOfLastElement] = indexOfRemovedEntity;
         mIndexToEntity[indexOfRemovedEntity] = entityOfLastElement;
         
-        mEntityToIndex[entity] = INVALID_ENTITY;
+        mEntityToIndex[entity] = MAX_ENTITIES;
         mIndexToEntity[indexOfLastElement] = INVALID_ENTITY;
         mSize--;
     }
     
     // Get component from entity
     Component* GetData(Entity entity) override {
-        if (mEntityToIndex[entity] == INVALID_ENTITY) {
+        if (mEntityToIndex[entity] == MAX_ENTITIES) {
             return nullptr;
         }
         return &mComponentArray[mEntityToIndex[entity]];
@@ -70,12 +72,12 @@ public:
     
     // Check if entity has this component
     bool HasData(Entity entity) const override {
-        return mEntityToIndex[entity] != INVALID_ENTITY;
+        return mEntityToIndex[entity] != MAX_ENTITIES;
     }
     
     // Called when entity is destroyed
     void EntityDestroyed(Entity entity) override {
-        if (mEntityToIndex[entity] != INVALID_ENTITY) {
+        if (mEntityToIndex[entity] != MAX_ENTITIES) {
             RemoveData(entity);
         }
     }
@@ -87,9 +89,10 @@ public:
     
     // Get typed component (for performance)
     T* GetComponent(Entity entity) {
-        if (mEntityToIndex[entity] == INVALID_ENTITY) {
+        if (mEntityToIndex[entity] == MAX_ENTITIES) {
             return nullptr;
         }
+        
         return &mComponentArray[mEntityToIndex[entity]];
     }
     

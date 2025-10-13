@@ -10,6 +10,12 @@ std::shared_ptr<T> SystemManager::RegisterSystem(Args&&... args) {
     const char* typeName = typeid(T).name();
     std::type_index typeIndex = std::type_index(typeid(T));
     
+    // Check if system already exists
+    auto it = mSystems.find(typeIndex);
+    if (it != mSystems.end()) {
+        return std::static_pointer_cast<T>(it->second);
+    }
+    
     // Create system instance
     auto system = std::make_shared<T>(std::forward<Args>(args)...);
     mSystems.insert({typeIndex, system});

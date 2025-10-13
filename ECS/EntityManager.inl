@@ -4,6 +4,7 @@
 #include "ComponentArray.h"
 #include <algorithm>
 #include <vector>
+#include <iostream>
 
 namespace Lite2D {
 namespace ECS {
@@ -41,6 +42,11 @@ template<typename T>
 void EntityManager::AddComponent(Entity entity, T component) {
     // Add a component to the array for an entity
     ComponentType componentType = GetComponentType<T>();
+    
+    if (!mComponentArrays[componentType]) {
+        return;
+    }
+    
     mComponentArrays[componentType]->InsertData(entity, &component);
     
     // Set this bit to signify that the entity has this component
@@ -65,6 +71,10 @@ template<typename T>
 T* EntityManager::GetComponent(Entity entity) {
     // Get a reference to a component from the array for an entity
     ComponentType componentType = GetComponentType<T>();
+    
+    if (!mComponentArrays[componentType]) {
+        return nullptr;
+    }
     
     auto componentArray = static_cast<ComponentArray<T>*>(mComponentArrays[componentType].get());
     return componentArray->GetComponent(entity);

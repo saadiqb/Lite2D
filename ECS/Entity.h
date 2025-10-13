@@ -9,7 +9,7 @@ namespace ECS {
 using Entity = uint32_t;
 
 // Constants
-constexpr Entity INVALID_ENTITY = 0;
+constexpr Entity INVALID_ENTITY = 0; // Use 0 as invalid entity (entities start from 1)
 constexpr Entity MAX_ENTITIES = 10000;
 
 // Component type ID

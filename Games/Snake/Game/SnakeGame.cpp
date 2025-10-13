@@ -135,6 +135,7 @@ void SnakeGame::InitializeGame() {
         mCollisionSystem->SetSnakeHeadEntity(mSnakeHeadEntity);
         mGameLogicSystem->SetSnakeHeadEntity(mSnakeHeadEntity);
     }
+    
 }
 
 void SnakeGame::Run() {

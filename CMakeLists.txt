@@ -70,3 +70,7 @@ elseif(APPLE)
 elseif(UNIX)
     target_compile_definitions(hello PRIVATE PLATFORM_LINUX)
 endif()
+
+# Add testing subdirectory
+enable_testing()
+add_subdirectory(tests)
