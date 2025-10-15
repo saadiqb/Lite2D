@@ -44,5 +44,4 @@ Thumbs.db
 *.swo
 *~
 
-# Documentation build
-docs/_build/
+docs/
