@@ -1,1 +1,45 @@
+# Lite2D ECS Game Engine - Git Ignore File
+
+# Build directories
 build/
+cmake-build-*/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.cmake
+
+# Compiled files
+*.o
+*.exe
+*.out
+*.dll
+*.so
+*.dylib
+*.a
+
+# IDE files
+.vscode/
+.vs/
+.idea/
+*.vcxproj
+*.vcxproj.user
+*.sln
+*.user
+
+# System files
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# Cache and temporary
+.cache/
+*.swp
+*.swo
+*~
+
+# Documentation build
+docs/_build/
