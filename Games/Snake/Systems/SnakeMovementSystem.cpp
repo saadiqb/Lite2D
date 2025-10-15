@@ -106,12 +106,15 @@ void SnakeMovementSystem::MoveSnakeBody(EntityManager& entityManager, SnakeHead*
         });
     
     // Move each body segment to the position of the previous segment
-    for (size_t i = 1; i < segments.size() && i < mPositionHistory.size(); ++i) {
+    // Use the position history to track where each segment should move
+    for (size_t i = 0; i < segments.size() && i < mPositionHistory.size(); ++i) {
         Position* segmentPos = entityManager.GetComponent<Position>(segments[i]);
         if (!segmentPos) continue;
         
-        // Get the position from history (going backwards in time)
-        size_t historyIndex = mPositionHistory.size() - i;
+        // Each segment follows the position that was recorded 'i' steps ago
+        // The most recent position (size()-1) goes to the first segment after head
+        // The second most recent (size()-2) goes to the second segment, etc.
+        size_t historyIndex = mPositionHistory.size() - 1 - i;
         if (historyIndex < mPositionHistory.size()) {
             segmentPos->x = mPositionHistory[historyIndex].x;
             segmentPos->y = mPositionHistory[historyIndex].y;

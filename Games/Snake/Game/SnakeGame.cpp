@@ -185,15 +185,9 @@ void SnakeGame::Update(float deltaTime) {
 }
 
 void SnakeGame::Render() {
-    // Clear screen
-    SDL_SetRenderDrawColor(mRenderer, 20, 20, 40, 255);
-    SDL_RenderClear(mRenderer);
-    
-    // Render all entities through render system
+    // Render all entities through render system (handles clearing and presenting internally)
     mRenderSystem->Update(*mEntityManager, 0.0f); // deltaTime not needed for rendering
-    
-    // Present frame
-    SDL_RenderPresent(mRenderer);
+    // Note: RenderSystem handles both clearing and presenting the frame
 }
 
 void SnakeGame::Shutdown() {

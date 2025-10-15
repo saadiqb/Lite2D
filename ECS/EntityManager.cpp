@@ -23,6 +23,9 @@ Entity EntityManager::CreateEntity() {
     Entity id = mAvailableEntities.front();
     mAvailableEntities.erase(mAvailableEntities.begin());
     
+    // Add to active entities list for performance optimization
+    mActiveEntities.push_back(id);
+    
     mLivingEntityCount++;
     
     return id;
@@ -31,6 +34,12 @@ Entity EntityManager::CreateEntity() {
 void EntityManager::DestroyEntity(Entity entity) {
     if (!IsValid(entity)) {
         return;
+    }
+    
+    // Remove from active entities list for performance optimization
+    auto it = std::find(mActiveEntities.begin(), mActiveEntities.end(), entity);
+    if (it != mActiveEntities.end()) {
+        mActiveEntities.erase(it);
     }
     
     // Invalidate the destroyed entity's signature
@@ -74,6 +83,9 @@ void EntityManager::Clear() {
             componentArray.reset();
         }
     }
+    
+    // Clear active entities list
+    mActiveEntities.clear();
     
     // Reset available entities queue
     mAvailableEntities.clear();

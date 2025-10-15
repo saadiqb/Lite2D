@@ -102,17 +102,34 @@ void RenderSystem::RenderEntity(Position* position, Renderable* renderable) {
     float screenX = position->x - mCameraOffsetX;
     float screenY = position->y - mCameraOffsetY;
     
-    // For now, render a simple rectangle
-    // In a real implementation, this would render sprites, textures, etc.
-    SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255); // White color
-    
     // Render a 20x20 rectangle at the entity's position
     SDL_FRect rect = {screenX - 10, screenY - 10, 20, 20};
+    
+    // Set color based on render layer for different entity types
+    switch (renderable->layer) {
+        case 0: // Snake body segments
+            SDL_SetRenderDrawColor(mRenderer, 100, 200, 100, 255); // Green
+            break;
+        case 1: // Snake head
+            SDL_SetRenderDrawColor(mRenderer, 200, 100, 100, 255); // Red
+            break;
+        case 2: // Food
+            SDL_SetRenderDrawColor(mRenderer, 255, 255, 100, 255); // Yellow
+            break;
+        case 3: // Walls
+            SDL_SetRenderDrawColor(mRenderer, 150, 150, 150, 255); // Gray
+            break;
+        default: // Default
+            SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255); // White
+            break;
+    }
+    
     SDL_RenderFillRect(mRenderer, &rect);
     
-    // Render a border to distinguish different layers
-    Uint8 borderColor = 255 - (renderable->layer * 30);
-    SDL_SetRenderDrawColor(mRenderer, borderColor, borderColor, borderColor, 255);
+    // Render a darker border for better visibility
+    Uint8 r, g, b, a;
+    SDL_GetRenderDrawColor(mRenderer, &r, &g, &b, &a);
+    SDL_SetRenderDrawColor(mRenderer, r/2, g/2, b/2, 255);
     SDL_RenderRect(mRenderer, &rect);
 }
 

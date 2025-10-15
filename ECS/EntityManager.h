@@ -89,6 +89,9 @@ private:
     // Queue of unused entity IDs
     std::vector<Entity> mAvailableEntities;
     
+    // Active entities list - ONLY contains living entities (major performance optimization)
+    std::vector<Entity> mActiveEntities;
+    
     // Total living entities - used to keep limits on how many exist
     size_t mLivingEntityCount;
     
@@ -185,15 +188,15 @@ bool EntityManager::HasComponent(Entity entity) const {
 template<typename... Components>
 std::vector<Entity> EntityManager::GetEntitiesWith() {
     std::vector<Entity> matchingEntities;
+    matchingEntities.reserve(mActiveEntities.size()); // Pre-allocate for performance
     
     // Create a signature that matches all the required components
     std::bitset<MAX_COMPONENT_TYPES> requiredSignature;
     (requiredSignature.set(GetComponentType<Components>()), ...);
     
-    // Check each entity's signature
-    for (Entity entity = 1; entity <= MAX_ENTITIES; ++entity) {
-        if (!IsValid(entity)) continue;
-        
+    // MAJOR PERFORMANCE OPTIMIZATION: Only iterate through active entities
+    // This changes complexity from O(MAX_ENTITIES) to O(active_entities)
+    for (Entity entity : mActiveEntities) {
         std::bitset<MAX_COMPONENT_TYPES> entitySignature = GetSignature(entity);
         
         // Check if entity has all required components

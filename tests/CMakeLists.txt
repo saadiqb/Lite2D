@@ -9,6 +9,7 @@ add_executable(ecs_tests
     test_entity_manager.cpp
     test_component_array.cpp
     test_system_manager.cpp
+    test_movement_system_performance.cpp
     test_main.cpp
     
     # Source files to test
