@@ -11,13 +11,6 @@ My attempt at a modern, high-performance Entity-Component-System (ECS) game engi
 - **System-Based Architecture** - Modular, extensible game logic
 - **Memory-Efficient Storage** - Contiguous component arrays for cache-friendly access
 
-### Performance Optimizations
-
-- **Active Entity Tracking** - Only processes living entities (3,333x performance improvement)
-- **Component Array Storage** - Cache-friendly memory layout
-- **System Signature Matching** - Automatic entity filtering for systems
-- **60+ FPS Performance** - Smooth gameplay with minimal overhead
-
 ### Rendering System
 
 - **SDL3 Integration** - Modern, cross-platform rendering
@@ -74,13 +67,7 @@ Entity (uint32_t ID)
 
 ## 📊 Performance Benchmarks
 
-| Metric             | Before Optimization | After Optimization | Improvement |
-| ------------------ | ------------------- | ------------------ | ----------- |
-| MovementSystem     | 130ms/frame         | 0.006ms/frame      | **21,667x** |
-| RenderSystem       | 130ms/frame         | 0.08ms/frame       | **1,625x**  |
-| Total Frame Time   | 261ms               | 0.11ms             | **2,373x**  |
-| FPS                | 3.7 FPS             | 58+ FPS            | **15.7x**   |
-| Frame Budget Usage | 1566%               | 0.68%              | **2,303x**  |
+stress testing & benchmarking (in-progress) ...
 
 ## 🛠️ Building
 
