@@ -7,7 +7,6 @@ My attempt at a modern, high-performance Entity-Component-System (ECS) game engi
 ### Core Architecture
 
 - **Entity-Component-System (ECS)** - Clean separation of data and behavior
-- **High-Performance Entity Queries** - O(n) complexity instead of O(MAX_ENTITIES)
 - **Type-Safe Component System** - Compile-time type safety with templates
 - **System-Based Architecture** - Modular, extensible game logic
 - **Memory-Efficient Storage** - Contiguous component arrays for cache-friendly access
@@ -16,7 +15,6 @@ My attempt at a modern, high-performance Entity-Component-System (ECS) game engi
 
 - **Active Entity Tracking** - Only processes living entities (3,333x performance improvement)
 - **Component Array Storage** - Cache-friendly memory layout
-- **Efficient Entity Queries** - Optimized `GetEntitiesWith<>()` operations
 - **System Signature Matching** - Automatic entity filtering for systems
 - **60+ FPS Performance** - Smooth gameplay with minimal overhead
 
