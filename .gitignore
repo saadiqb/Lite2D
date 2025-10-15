@@ -4,6 +4,9 @@
 build/
 cmake-build-*/
 
+# Third-party libraries
+vendored/
+
 # CMake generated files
 CMakeFiles/
 CMakeCache.txt
