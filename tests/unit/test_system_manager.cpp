@@ -2,7 +2,7 @@
 #include "ECS/EntityManager.h"
 #include "ECS/SystemManager.h"
 #include "ECS/Systems/MovementSystem.h"
-#include "ECS/Systems/RenderSystem.h"
+#include "Rendering/RenderSystem.h"
 #include "ECS/Components/Position.h"
 #include "ECS/Components/Velocity.h"
 #include "ECS/Components/Renderable.h"

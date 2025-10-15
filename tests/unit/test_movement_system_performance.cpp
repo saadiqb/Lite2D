@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 #include <chrono>
 #include <iostream>
-#include "../ECS/EntityManager.h"
-#include "../ECS/SystemManager.h"
-#include "../ECS/Systems/MovementSystem.h"
-#include "../ECS/Components/Position.h"
-#include "../ECS/Components/Velocity.h"
+#include "ECS/EntityManager.h"
+#include "ECS/SystemManager.h"
+#include "ECS/Systems/MovementSystem.h"
+#include "ECS/Components/Position.h"
+#include "ECS/Components/Velocity.h"
 
 using namespace Lite2D::ECS;
 

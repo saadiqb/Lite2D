@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../System.h"
-#include "../EntityManager.h"
-#include "../Components/Position.h"
-#include "../Components/Velocity.h"
+#include "ECS/System.h"
+#include "ECS/EntityManager.h"
+#include "ECS/Components/Position.h"
+#include "ECS/Components/Velocity.h"
 
 namespace Lite2D {
 namespace ECS {

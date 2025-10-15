@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../../ECS/EntityManager.h"
-#include "../../ECS/SystemManager.h"
-#include "../../ECS/Systems/MovementSystem.h"
-#include "../../ECS/Systems/RenderSystem.h"
+#include "ECS/EntityManager.h"
+#include "ECS/SystemManager.h"
+#include "ECS/Systems/MovementSystem.h"
+#include "Rendering/RenderSystem.h"
 #include "../Systems/InputSystem.h"
 #include "../Systems/SnakeMovementSystem.h"
 #include "../Systems/CollisionSystem.h"

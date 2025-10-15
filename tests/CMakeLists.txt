@@ -1,39 +1,49 @@
-cmake_minimum_required(VERSION 3.16)
+# Tests CMakeLists.txt
 
 # Find Google Test
 find_package(GTest REQUIRED)
 
-# Create test executable
-add_executable(ecs_tests
-    # Test files
-    test_entity_manager.cpp
-    test_component_array.cpp
-    test_system_manager.cpp
-    test_movement_system_performance.cpp
-    test_main.cpp
-    
-    # Source files to test
-    ${CMAKE_SOURCE_DIR}/ECS/EntityManager.cpp
-    ${CMAKE_SOURCE_DIR}/ECS/SystemManager.cpp
-    ${CMAKE_SOURCE_DIR}/ECS/Systems/MovementSystem.cpp
-    ${CMAKE_SOURCE_DIR}/ECS/Systems/RenderSystem.cpp
+# Unit Tests
+add_executable(ecs_unit_tests
+    unit/test_entity_manager.cpp
+    unit/test_component_array.cpp
+    unit/test_system_manager.cpp
+    unit/test_main.cpp
 )
 
-# Include directories
-target_include_directories(ecs_tests PRIVATE 
-    ${CMAKE_SOURCE_DIR}
-    ${GTEST_INCLUDE_DIRS}
-)
-
-# Link libraries - use modern CMake targets
-target_link_libraries(ecs_tests 
+target_link_libraries(ecs_unit_tests 
+    PRIVATE 
+    Lite2D
     GTest::GTest
     GTest::Main
-    SDL3::SDL3
 )
 
-# Compile features
-target_compile_features(ecs_tests PRIVATE cxx_std_17)
+# Performance Tests
+add_executable(ecs_performance_tests
+    unit/test_movement_system_performance.cpp
+    unit/test_main.cpp
+)
 
-# Add test to CTest
-add_test(NAME ECS_Tests COMMAND ecs_tests)
+target_link_libraries(ecs_performance_tests 
+    PRIVATE 
+    Lite2D
+    GTest::GTest
+    GTest::Main
+)
+
+# Integration Tests
+add_executable(ecs_integration_tests
+    unit/test_ecs.cpp
+)
+
+target_link_libraries(ecs_integration_tests 
+    PRIVATE 
+    Lite2D
+    GTest::GTest
+    GTest::Main
+)
+
+# Add tests to CTest
+add_test(NAME ECS_Unit_Tests COMMAND ecs_unit_tests)
+add_test(NAME ECS_Performance_Tests COMMAND ecs_performance_tests)
+add_test(NAME ECS_Integration_Tests COMMAND ecs_integration_tests)

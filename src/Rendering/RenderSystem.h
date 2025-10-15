@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../System.h"
-#include "../EntityManager.h"
-#include "../Components/Position.h"
-#include "../Components/Renderable.h"
+#include "ECS/System.h"
+#include "ECS/EntityManager.h"
+#include "ECS/Components/Position.h"
+#include "ECS/Components/Renderable.h"
 #include <SDL3/SDL.h>
 
 namespace Lite2D {

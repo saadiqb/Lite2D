@@ -7,11 +7,11 @@
 #include <iostream>
 #include <iomanip>
 
-#include "timer.h"
-#include "Texture.h"
-#include "TextRenderer.h"
-#include "Renderer.h"
-#include "InputManager.h"
+#include "Utils/timer.h"
+#include "Rendering/Texture.h"
+#include "Rendering/TextRenderer.h"
+#include "Rendering/Renderer.h"
+#include "Input/InputManager.h"
 
 /* Constants */
 //Screen dimension constants
@@ -79,9 +79,9 @@ int main( int argc, char* args[] )
     TextRenderer gTimeTextTexture;
 
     Texture ratTexture(200, 200);
-    ratTexture.LoadFromFile("rat.png", renderer);
+    ratTexture.LoadFromFile("../assets/textures/rat.png", renderer);
 
-    gTimeTextTexture.LoadFont("lazy.ttf", 28);
+    gTimeTextTexture.LoadFont("../assets/fonts/lazy.ttf", 28);
 
     std::stringstream fpsCounter;
 

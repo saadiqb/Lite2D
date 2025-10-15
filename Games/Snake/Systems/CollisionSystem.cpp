@@ -1,6 +1,6 @@
 #include "CollisionSystem.h"
-#include "../../ECS/Components/Position.h"
-#include "../../ECS/Components/Renderable.h"
+#include "ECS/Components/Position.h"
+#include "ECS/Components/Renderable.h"
 #include "../Components/SnakeSegment.h"
 #include <iostream>
 #include <random>

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../ECS/System.h"
-#include "../../ECS/EntityManager.h"
+#include "ECS/System.h"
+#include "ECS/EntityManager.h"
 #include "../Components/SnakeHead.h"
 #include "../Components/GameState.h"
 #include <SDL3/SDL.h>
