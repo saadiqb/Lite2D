@@ -19,8 +19,8 @@ My attempt at a modern, high-performance Entity-Component-System (ECS) game engi
 
 ## Demo
 
-### Particles Collision
-### Snake Game
+Particles Collision
+Snake Game
 
 ### Core Systems
 
