@@ -2,8 +2,6 @@
 
 My attempt at a modern, high-performance Entity-Component-System (ECS) game engine built in C++17 with SDL3, designed for 2D games with performance optimizations.
 
-## 🚀 Features
-
 ### Core Architecture
 
 - **Entity-Component-System (ECS)** - Clean separation of data and behavior
@@ -19,40 +17,10 @@ My attempt at a modern, high-performance Entity-Component-System (ECS) game engi
 - **Camera System** - Viewport management and offset support
 - **VSync Support** - Smooth, tear-free rendering
 
-## 🎮 Demo Games
+## Demo
 
+### Particles Collision
 ### Snake Game
-
-A complete Snake implementation demonstrating:
-
-- Entity movement and collision detection
-- Game state management
-- Input handling
-- Score tracking and game progression
-
-**Controls:**
-
-- Arrow Keys / WASD - Move snake
-- Space - Start/Pause
-- R - Restart
-- Q - Quit
-- ESC - Exit
-
-## 🏗️ Architecture
-
-### ECS Components
-
-```
-Entity (uint32_t ID)
-├── Position (x, y coordinates)
-├── Velocity (x, y movement)
-├── Renderable (visibility, layer)
-├── SnakeHead (direction, movement timer)
-├── SnakeSegment (segment index)
-├── Food (nutritional value)
-├── Wall (boundary type)
-└── GameState (current game state)
-```
 
 ### Core Systems
 
@@ -65,11 +33,11 @@ Entity (uint32_t ID)
 - **InputSystem** - User input processing
 - **GameLogicSystem** - Game state and rules
 
-## 📊 Performance Benchmarks
+## Performance Benchmarks
 
 stress testing & benchmarking (in-progress) ...
 
-## 🛠️ Building
+## Building
 
 ### Prerequisites
 
@@ -101,24 +69,7 @@ make -j$(nproc)
 ./bin/snake_game      # Snake game demo
 ```
 
-### Project Structure
-
-```
-Lite2D/
-├── ECS/                    # Core ECS engine
-│   ├── EntityManager.h     # Entity lifecycle management
-│   ├── SystemManager.h     # System coordination
-│   ├── Components/         # Base component types
-│   └── Systems/           # Core systems
-├── Games/
-│   └── Snake/             # Snake game implementation
-├── tests/                 # Unit tests and benchmarks
-└── CMakeLists.txt         # Build configuration
-```
-
-## 🧪 Testing
-
-Comprehensive test suite with performance benchmarks:
+## Testing
 
 ```bash
 # Run all tests
@@ -127,14 +78,12 @@ Comprehensive test suite with performance benchmarks:
 # Run specific performance tests
 ./bin/ecs_tests --gtest_filter="MovementSystemPerformanceTest.*"
 
-# Run bouncing balls demo
-./bin/test_systems
 
 # Run Snake game
 ./bin/snake_game
 ```
 
-## 📈 Performance Analysis
+## Performance Analysis
 
 The engine includes built-in performance monitoring:
 
@@ -144,7 +93,7 @@ The engine includes built-in performance monitoring:
 - **Memory usage tracking** - Component array efficiency
 - **Debug visualization** - Real-time performance metrics
 
-## 🔧 Usage Example
+## Usage Example
 
 ```cpp
 #include "ECS/EntityManager.h"
@@ -176,27 +125,3 @@ while (running) {
     systemManager.UpdateSystems(entityManager, deltaTime);
 }
 ```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🎓 Learning Outcomes
-
-This project demonstrates:
-
-- **Modern C++17** features and best practices
-- **ECS Architecture** design and implementation
-- **Performance optimization** techniques and profiling
-- **Game engine architecture** principles
-- **Cross-platform development** with SDL3
-- **Unit testing** and performance benchmarking
-- **Memory management** and cache optimization
-
----
-
-_Built with ❤️ and modern C++ for optimal performance_
