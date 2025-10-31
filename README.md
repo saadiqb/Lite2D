@@ -2,6 +2,9 @@
 
 My attempt at a modern, high-performance Entity-Component-System (ECS) game engine built in C++17 with SDL3, designed for 2D games with performance optimizations.
 
+![Visualization](https://raw.githubusercontent.com/saadiqb/saadiqb.github.io/refs/heads/master/src/assets/images/ParticleCollision.gif)
+
+
 ### Core Architecture
 
 - **Entity-Component-System (ECS)** - Clean separation of data and behavior
